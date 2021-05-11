@@ -9,5 +9,10 @@
 
 <GridLayout class="page__content">
   <Label class="page__content-icon fas" text="&#xf015;"></Label>
-  <Label class="page__content-placeholder" text="<!-- Page content goes here -->"></Label>
+  <Label class="page__content-placeholder" text="Blubb"></Label>
+  <TextView hint="Enter some text..." [text]="tvtext" (textChange)="onTextChange($event)">
+  </TextView>  
+  <button class="-primary -rounded-sm -outline" text="New exercise!" (tap)="onTapNewExercise($event)">
+  </button>
+  <image src="data:Image/png;base64,iVBORw..." stretch="aspectFill"></image>
 </GridLayout>
