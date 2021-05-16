@@ -8,14 +8,14 @@ import {
 } from 'nativescript-ui-sidedrawer'
 import { filter } from 'rxjs/operators'
 import { Application } from '@nativescript/core'
-import { HomeComponent, Svg, Modulation } from './home/home.component'
+import { HomeComponent, Modulation } from './home/home.component'
 import { EventData, Switch } from '@nativescript/core'
 
 @Component({
   selector: 'ns-app',
   templateUrl: 'app.component.html',
 })
-export class AppComponent implements OnInit {
+export class Drawer implements OnInit {
   private _activatedUrl: string
   private _sideDrawerTransition: DrawerTransitionBase
 
@@ -69,10 +69,27 @@ export class AppComponent implements OnInit {
                   this.grosseUntersekunde, this.kleineUntersekunde, this.tritonus]; //
   
   public onCheckedChange(args: EventData, modId) {
-    const sw = args.object as Switch
-    const isChecked = sw.checked // boolean
-    const m = this.modulations.find(element => element.id === modId)
-    m.checked = isChecked
+    const sw = args.object as Switch;
+    const isChecked = sw.checked; // boolean
+    const m = this.modulations.find(element => element.id === modId);
+    m.checked = isChecked;
+    //this.getUsersMods();
+    //console.log(this.modulations)
     //console.log(modId, m, isChecked)
+  }
+  public getUsersMods(): String {
+    let userMods = [];
+    this.modulations.forEach( el => {
+      if (el.checked) {
+        userMods.push(el.loewe.toString());
+      }
+    });
+    let userModsString: String[] = [];
+    userMods.forEach(el => {
+      userModsString.push(String(el));
+      console.log(userModsString);
+    });
+    console.log(`M: ${JSON.stringify(userModsString)}`);
+    return JSON.stringify(userModsString)
   }
 }

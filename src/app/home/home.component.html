@@ -7,12 +7,17 @@
     </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content">
-  <Label class="page__content-icon fas" text="&#xf015;"></Label>
-  <Label class="page__content-placeholder" text="Blubb"></Label>
-  <TextView hint="Enter some text..." [text]="tvtext" (textChange)="onTextChange($event)">
-  </TextView>  
-  <button class="-primary -rounded-sm -outline" text="New exercise!" (tap)="onTapNewExercise($event)">
-  </button>
-  <image src="data:Image/png;base64,iVBORw..." stretch="aspectFill"></image>
-</GridLayout>
+<StackLayout class="page__content">
+  <!--<Label class="page__content-icon fas" text="&#xf015;"></Label>
+  <Label class="page__content-placeholder" text="Blubb"></Label>-->
+  <TextView hint="Enter some text..." [text]="done" (textChange)="onTextChange($event)">
+  </TextView>
+  <TextView hint="Enter some text..." [text]="hint" (textChange)="onTextChange($event)">
+  </TextView>
+  <!--  <HtmlView [html]="htmlString" ></HtmlView>-->
+  <StackLayout borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent">
+    <Image [src]="img" stretch="aspectFit" style="border: 50px solid transparent;"></Image>
+  </StackLayout>
+  <button verticalAlignment="bottom" class="-primary -rounded-sm -outline" text="New exercise!" (tap)="onTapNewExercise($event)"></button>
+</StackLayout>
+
