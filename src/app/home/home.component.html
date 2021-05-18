@@ -14,14 +14,14 @@
     <!--<TextView hint="Enter some text..." [text]="done" (textChange)="onTextChange($event)">
     </TextView>-->
     <!--  <HtmlView [html]="htmlString" ></HtmlView>textAlignment="center" -->
-    <StackLayout borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=200 verticalAlignment="stretch">
-      <Image [src]="img" stretch="aspectFit" style="border: 50px solid transparent;"></Image>
-      <Label [text]="hint" textWrap="true" (textChange)="onTextChange($event)"></Label>
+    <StackLayout borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=250 verticalAlignment="stretch">
+      <Image [src]="img" stretch="aspectFit" style="border: 50px solid transparent;" height=200></Image>
+      <Label [text]="hint" textWrap="true" (textChange)="onTextChange($event)" marginTop=10></Label>
     </StackLayout>
     <button verticalAlignment="bottom" class="-primary -rounded-sm -outline" text="New Exercise!" (tap)="onTapNewExercise($event)"></button>
     <button [isEnabled]="done" verticalAlignment="bottom" class="-secondary -rounded-sm -outline" [text]="toggleText" (tap)="onTapShowSolution($event)"></button>
     
-    <StackLayout [visibility]="solutionVisible" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=300 verticalAlignment="stretch">
+    <StackLayout [visibility]="solutionVisible" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=200 verticalAlignment="stretch">
       <Image [src]="imgSolution" stretch="aspectFit" style="border: 50px solid transparent;" marginTop=20 marginBottom=10></Image>
     </StackLayout>
 
