@@ -1,12 +1,7 @@
-import { Inject, Injectable, NgModule } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpResponse } from '@nativescript/core';
 import { Http, HTTPFormData } from '@klippa/nativescript-http';
-import { Byte } from '@angular/compiler/src/util';
-//import { Svg } from './home.component';
 
-
-//var verovioModule = require('../../lib/verovio-toolkit.js');
-//declare var verovio: any;
 
 export interface Svg {
     done: String;
@@ -15,6 +10,7 @@ export interface Svg {
     lsg: String;
     png: String;
     pngInk: String;
+    pngInkLsg: String;
   }
 
 @Injectable({

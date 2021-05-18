@@ -1,23 +1,29 @@
 <ActionBar class="action-bar">
     <NavigationButton visibility="hidden"></NavigationButton>
     <GridLayout columns="50, *">
-        <Label class="action-bar-title" text="Home" colSpan="2"></Label>
+        <Label class="action-bar-title" text="Modulations" colSpan="2"></Label>
 
         <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
     </GridLayout>
 </ActionBar>
 
-<StackLayout class="page__content">
-  <!--<Label class="page__content-icon fas" text="&#xf015;"></Label>
-  <Label class="page__content-placeholder" text="Blubb"></Label>-->
-  <TextView hint="Enter some text..." [text]="done" (textChange)="onTextChange($event)">
-  </TextView>
-  <TextView hint="Enter some text..." [text]="hint" (textChange)="onTextChange($event)">
-  </TextView>
-  <!--  <HtmlView [html]="htmlString" ></HtmlView>-->
-  <StackLayout borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent">
-    <Image [src]="img" stretch="aspectFit" style="border: 50px solid transparent;"></Image>
-  </StackLayout>
-  <button verticalAlignment="bottom" class="-primary -rounded-sm -outline" text="New exercise!" (tap)="onTapNewExercise($event)"></button>
-</StackLayout>
+<ScrollView>
+  <StackLayout class="page__content">
+    <Label class="h2" text="Modulations Training (with examples by C. Loewe)" textWrap="true" marginTop=10 marginRight=10 marginLeft=10 marginBottom=20></Label>
+    <!--<Label class="page__content-icon fas" text="&#xf015;"></Label>-->
+    <!--<TextView hint="Enter some text..." [text]="done" (textChange)="onTextChange($event)">
+    </TextView>-->
+    <!--  <HtmlView [html]="htmlString" ></HtmlView>textAlignment="center" -->
+    <StackLayout borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=200 verticalAlignment="stretch">
+      <Image [src]="img" stretch="aspectFit" style="border: 50px solid transparent;"></Image>
+      <Label [text]="hint" textWrap="true" (textChange)="onTextChange($event)"></Label>
+    </StackLayout>
+    <button verticalAlignment="bottom" class="-primary -rounded-sm -outline" text="New Exercise!" (tap)="onTapNewExercise($event)"></button>
+    <button verticalAlignment="bottom" class="-secondary -rounded-sm -outline" [text]="toggleText" (tap)="onTapShowSolution($event)"></button>
+    
+    <StackLayout [visibility]="solutionVisible" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=300 verticalAlignment="stretch">
+      <Image [src]="imgSolution" stretch="aspectFit" style="border: 50px solid transparent;" marginTop=20 marginBottom=10></Image>
+    </StackLayout>
 
+  </StackLayout>
+</ScrollView>
