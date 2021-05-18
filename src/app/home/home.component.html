@@ -19,7 +19,7 @@
       <Label [text]="hint" textWrap="true" (textChange)="onTextChange($event)"></Label>
     </StackLayout>
     <button verticalAlignment="bottom" class="-primary -rounded-sm -outline" text="New Exercise!" (tap)="onTapNewExercise($event)"></button>
-    <button verticalAlignment="bottom" class="-secondary -rounded-sm -outline" [text]="toggleText" (tap)="onTapShowSolution($event)"></button>
+    <button [isEnabled]="done" verticalAlignment="bottom" class="-secondary -rounded-sm -outline" [text]="toggleText" (tap)="onTapShowSolution($event)"></button>
     
     <StackLayout [visibility]="solutionVisible" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=300 verticalAlignment="stretch">
       <Image [src]="imgSolution" stretch="aspectFit" style="border: 50px solid transparent;" marginTop=20 marginBottom=10></Image>

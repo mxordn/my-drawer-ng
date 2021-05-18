@@ -142,7 +142,7 @@ export class HomeComponent implements OnInit {
       console.log(`Mods: ${this.userMods}`);
       //console.log(formData['modType']);'["Loewe II", "Loewe III"]''"' +  + '"'
       await Http.request({
-          url: 'https://8b5fc1d96c03.ngrok.io/api/neueAufgabe',
+          url: 'https://ce7a36393100.ngrok.io/api/neueAufgabe',
           //54ae1935cfef9457761fd2e2f0668c855db0d5d9d436a878
           method: 'POST',
           //headers: { "Content-Type": "application/json" },
