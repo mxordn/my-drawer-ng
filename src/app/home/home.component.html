@@ -7,13 +7,9 @@
     </GridLayout>
 </ActionBar>
 
-<ScrollView>
+<!--<ScrollView>
   <StackLayout class="page__content">
     <Label class="h2" text="Modulations Training (with examples by C. Loewe)" textWrap="true" marginTop=10 marginRight=10 marginLeft=10 marginBottom=20></Label>
-    <!--<Label class="page__content-icon fas" text="&#xf015;"></Label>-->
-    <!--<TextView hint="Enter some text..." [text]="done" (textChange)="onTextChange($event)">
-    </TextView>-->
-    <!--  <HtmlView [html]="htmlString" ></HtmlView>textAlignment="center" -->
     <StackLayout borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=250 verticalAlignment="stretch">
       <Image [src]="img" stretch="aspectFit" style="border: 50px solid transparent;" height=200></Image>
       <Label [text]="hint" textWrap="true" (textChange)="onTextChange($event)" marginTop=10></Label>
@@ -24,6 +20,19 @@
     <StackLayout [visibility]="solutionVisible" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=200 verticalAlignment="stretch">
       <Image [src]="imgSolution" stretch="aspectFit" style="border: 50px solid transparent;" marginTop=20 marginBottom=10></Image>
     </StackLayout>
-
   </StackLayout>
-</ScrollView>
+</ScrollView>-->
+
+<GridLayout cloumns="auto, auto" rows="*, auto">
+  <GridLayout row="0" colSpan="2" rows="*, auto" columns="*, 120" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=250 verticalAlignment="stretch">
+    <Image row="0" column="1" [src]="img" stretch="aspectFit" style="border: 50px solid transparent;" height=200></Image>
+    <StackLayout row="1" colspan="2">
+      <Label text="Hinweis:" (textChange)="onTextChange($event)" marginTop=10></Label>
+      <Label [text]="hint" textWrap="true" (textChange)="onTextChange($event)" marginTop=5></Label>
+    </StackLayout>
+  </GridLayout>
+  <GridLayout row="1" rows="*, *" columns="*,10,*" orientation="horizontal" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent">
+    <button row="0" column="0" width="50%" class="-primary -rounded-sm -outline" text="New Exercise!" (tap)="onTapNewExercise($event)"></button>
+    <button row="0" column="2" width="50%" class="-secondary -rounded-sm -outline" [text]="toggleText" (tap)="onTapShowSolution($event)" [isEnabled]="done"></button>
+  </GridLayout>
+</GridLayout>
