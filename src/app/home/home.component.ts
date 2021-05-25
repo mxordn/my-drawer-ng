@@ -176,8 +176,8 @@ export class HomeComponent implements OnInit {
       //console.log(formData['modType']);'["Loewe II", "Loewe III"]''"' +  + '"'
       await Http.request({
           timeout: 10000,
-          url: 'https://755bd6e26aee.ngrok.io/api/neueAufgabe',
-          //54ae1935cfef9457761fd2e2f0668c855db0d5d9d436a87817856ccee43b e5624b203cdf
+          url: 'https://8587c9f07fe6.ngrok.io/api/neueAufgabe',
+          //54ae1935cfef9457761fd2e2f0668c855db0d5d9d436a87817856ccee43b e5624b203cdf 755bd6e26aee
           method: 'POST',
           //headers: { "Content-Type": "application/json" },
           content: formData
@@ -227,7 +227,7 @@ export class HomeComponent implements OnInit {
     if (timeout) {
       let options = {
         title: "Neue Aufgabe",
-        message: "Something went wrong. The server is not responding in time. Please try again (maybe later).",
+        message: "Something went wrong. The server timeout. Please try again (maybe also later).",
         okButtonText: "OK"
       };
       return options;
@@ -235,7 +235,7 @@ export class HomeComponent implements OnInit {
     else {
       let options = {
         title: "Neue Aufgabe",
-        message: "Something went wrong. Please try again. Most likely this happens because the server is not reachable.",
+        message: "General Error! Something went wrong. Please try again and check your network connection. Most likely this happens because the server is not reachable.",
         okButtonText: "OK"
       };
       return options;
