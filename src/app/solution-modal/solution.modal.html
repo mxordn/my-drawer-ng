@@ -1,0 +1,12 @@
+<GridLayout rows="*, auto" columns="*" backgroundColor="lightgreen">
+    <StackLayout row="0" rows="auto, 20, *" borderTopWidth=20 borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" (tap)="closeSolution()">
+        <Label row="0" textAlignment="center" borderBottomWidth="10" borderBottomColor="lightgreen">
+            <FormattedString>
+                <span class="h1" text="Sample Solution" fontWeight="bold"></span>
+              </FormattedString>
+        </Label>
+        <Image row="2" column="0" [src]="solutionPng" stretch="aspectFit" style="border: 50px solid transparent;" height=200></Image>
+<!--        <label [text]="solutionPng"></label>-->
+    </StackLayout>
+    <Label row="2" text="Tap somewhere to close" style="font-size: 14;" textAlignment="center"></Label>
+</GridLayout>

@@ -18,21 +18,23 @@
     <button [isEnabled]="done" verticalAlignment="bottom" class="-secondary -rounded-sm -outline" [text]="toggleText" (tap)="onTapShowSolution($event)"></button>
     
     <StackLayout [visibility]="solutionVisible" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=200 verticalAlignment="stretch">
-      <Image [src]="imgSolution" stretch="aspectFit" style="border: 50px solid transparent;" marginTop=20 marginBottom=10></Image>
+      <Image [src]="imgSolution" stretch="aspectFit" style="border: 50px solid transparent;" marginTop=20 marginBottom=10></Image>onTapS
     </StackLayout>
   </StackLayout>
 </ScrollView>-->
 
 <GridLayout cloumns="auto, auto" rows="*, auto">
   <GridLayout row="0" colSpan="2" rows="*, auto" columns="*, 120" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=250 verticalAlignment="stretch">
-    <Image row="0" column="1" [src]="img" stretch="aspectFit" style="border: 50px solid transparent;" height=200></Image>
+    <Image row="0" column="0" colspan="2" [src]="img" stretch="aspectFit" style="border: 50px solid transparent;" height=200 [isEnabled]="!processing"></Image>
     <StackLayout row="1" colspan="2">
       <Label text="Hinweis:" (textChange)="onTextChange($event)" marginTop=10></Label>
+      <label text="Tap ”New Exercise!“ to start the Training." textWrap="true" marginTop=5 [visibility]="startScreenText"></label>
       <Label [text]="hint" textWrap="true" (textChange)="onTextChange($event)" marginTop=5></Label>
     </StackLayout>
   </GridLayout>
+  <ActivityIndicator [busy]="processing"></ActivityIndicator>
   <GridLayout row="1" rows="*, *" columns="*,10,*" orientation="horizontal" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent">
-    <button row="0" column="0" width="50%" class="-primary -rounded-sm -outline" text="New Exercise!" (tap)="onTapNewExercise($event)"></button>
-    <button row="0" column="2" width="50%" class="-secondary -rounded-sm -outline" [text]="toggleText" (tap)="onTapShowSolution($event)" [isEnabled]="done"></button>
+    <button row="0" column="0" width="50%" class="-primary -rounded-sm -outline" text="New Exercise!" (tap)="onTapNewExercise($event)" [isEnabled]="!processing"></button>
+    <button row="0" column="2" width="50%" class="-secondary -rounded-sm -outline" [text]="toggleText" (tap)="openSolution()" [isEnabled]="done ? done : !processing"></button>
   </GridLayout>
 </GridLayout>

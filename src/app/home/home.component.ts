@@ -1,12 +1,15 @@
 //import { HttpHeaders } from '@angular/common/http'
-import { Injectable, Component, OnInit } from '@angular/core'
+import { Injectable, Component, OnInit, ViewContainerRef } from '@angular/core'
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser'
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer'
-import { Application, EventData, Button, TextView, LoadEventData, WebView, ImageSource } from '@nativescript/core'
+import { Application, EventData, Button, TextView, LoadEventData, WebView, ImageSource, Dialogs } from '@nativescript/core'
 import { EngraverService, Svg } from './engraver.service'
 import { HttpResponse } from '@nativescript/core'
 import { Http, HTTPFormData, HTTPFormDataEntry } from '@klippa/nativescript-http'
 import { Drawer } from '../app.component';
+import { ModalDialogService, ModalDialogOptions, ModalDialogParams } from '@nativescript/angular';
+import { Solution } from '../solution-modal/solution.modal';
+
 //import { ImageSourceSVG } from '@sergeymell/nativescript-svg'
 //import { ImageSource } from 'tns-core-modules/image-source'
 //import { MatSnackBar } from '@angular/material/snack-bar'
@@ -71,15 +74,18 @@ export class HomeComponent implements OnInit {
   svg: SafeHtml = "";
   lsg: String = "";
   done: String = "false";
+  processing: Boolean = false;
   hint: String;// = "Kein Tipp da"
   tvtext: String = "Blubb";
   img: ImageSource;
   imgSolution: ImageSource;
   solutionVisible: String = 'collapse';
+  startScreenText: String = 'visible';
   toggleText = "Show Sample Solution";
 
   constructor(//private hC: HttpClient,
     private sanitizer: DomSanitizer,
+    private modalService: ModalDialogService, private vcRef: ViewContainerRef,
     //private svgService: SvgService,
     private engraver: EngraverService,
     private drawer: Drawer,
@@ -112,6 +118,31 @@ export class HomeComponent implements OnInit {
     // execute your custom logic here...
   }
 
+  public openSolution() {
+    this.createModelView()
+  }
+
+  private createModelView(): Promise<any> {
+    // showModal returns a promise with the received parameters from the modal page
+    let solutionOptions: ModalDialogOptions;
+
+    if (this.scores.done) {
+      solutionOptions = {
+        viewContainerRef: this.vcRef,
+        context: this.scores.pngInkLsg.toString(),
+        fullscreen: false,
+      };
+    }
+    else {
+      solutionOptions = {
+        viewContainerRef: this.vcRef,
+        context: "Keine Lösung da.",
+        fullscreen: false,
+      };
+    }
+    return this.modalService.showModal(Solution, solutionOptions);
+}
+
   async onTapShowSolution(args: EventData) {
     const button = args.object as Button;
     //this.scores = this.svgService.getScores();
@@ -131,8 +162,10 @@ export class HomeComponent implements OnInit {
   }
 
   public async getNewExercise() {
+      this.startScreenText = 'collapse';
       this.solutionVisible = 'collapse';
       this.toggleText = "Show Sample Solution";
+      this.processing = true;
 
       const formData = new HTTPFormData();
       this.userMods = this.drawer.getUsersMods();
@@ -142,8 +175,9 @@ export class HomeComponent implements OnInit {
       console.log(`Mods: ${this.userMods}`);
       //console.log(formData['modType']);'["Loewe II", "Loewe III"]''"' +  + '"'
       await Http.request({
-          url: 'https://ce7a36393100.ngrok.io/api/neueAufgabe',
-          //54ae1935cfef9457761fd2e2f0668c855db0d5d9d436a878
+          timeout: 10000,
+          url: 'https://755bd6e26aee.ngrok.io/api/neueAufgabe',
+          //54ae1935cfef9457761fd2e2f0668c855db0d5d9d436a87817856ccee43b e5624b203cdf
           method: 'POST',
           //headers: { "Content-Type": "application/json" },
           content: formData
@@ -169,13 +203,43 @@ export class HomeComponent implements OnInit {
           this.lsg = this.scores.lsg;
           this.hint = this.scores.hint;
           this.done = this.scores.done;
+          this.processing = false;
           },
       e => {
-          console.log(`${e}`)
-          this.scores.done = "Ups, da ging was schief.";
-      });
+          console.log(`Error in then: ${e}`)
+          //this.scores.done = "Ups, da ging was schief.";
+          this.processing = false;
+          Dialogs.alert(this.getErrorAlert(true));
+
+      })
+      .catch(
+        (e) => {
+          console.log(`Error to catch: ${e}`);
+          this.processing = false;
+          Dialogs.alert(this.getErrorAlert(false));
+        }
+      );
 
 //    const result = await this.hC.post<Svg>("api/neueAufgabe", formData).toPromise().then()
+  }
+
+  private getErrorAlert(timeout: Boolean) {
+    if (timeout) {
+      let options = {
+        title: "Neue Aufgabe",
+        message: "Something went wrong. The server is not responding in time. Please try again (maybe later).",
+        okButtonText: "OK"
+      };
+      return options;
+    }
+    else {
+      let options = {
+        title: "Neue Aufgabe",
+        message: "Something went wrong. Please try again. Most likely this happens because the server is not reachable.",
+        okButtonText: "OK"
+      };
+      return options;
+    }
   }
 
   onTextChange(args: EventData) {

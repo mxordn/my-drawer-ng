@@ -15,20 +15,20 @@ https://docs.nativescript.org/angular/ui/professional-ui-components/ng-SideDrawe
       <!--<Label class="nt-drawer__header-footnote" text="username@mail.com"></Label>-->
     </StackLayout>
 
-    <ScrollView row="1" class="nt-drawer__body">
-      <StackView>
-        <ListView [items]="modulations" class="list-group">
+    <!--<ScrollView row="1" class="nt-drawer__body">-->
+      <StackLayout row="1"><!---->
+        <ListView [items]="modulations" class="root-drawer-content">
           <ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
             <!-- The item template can only have a single root view container (e.g. GridLayout, StackLayout, etc.)-->
-            <StackLayout orientation="horizontal">
-              <Switch (checkedChange)="onCheckedChange($event, item.id)" [checked]="item.checked"></Switch>
-              <label [text]="item.type" class="list-group-item"></label>
-            </StackLayout>
+            <GridLayout rows="auto" columns="auto,auto">
+              <Switch column="0" (checkedChange)="onCheckedChange($event, item.id)" [checked]="item.checked"></Switch>
+              <label column="1" [text]="item.type" class="list-group-item"></label>
+            </GridLayout>
           </ng-template>
         </ListView>
-      </StackView>
+      </StackLayout><!---->
       <!--<StackLayout class="hr"></StackLayout>-->
-    </ScrollView>
+    <!--</ScrollView>-->
   </GridLayout>
 
   <page-router-outlet tkMainContent></page-router-outlet>

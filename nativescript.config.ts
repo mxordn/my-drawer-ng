@@ -1,7 +1,7 @@
 import { NativeScriptConfig } from '@nativescript/core';
 
 export default {
-  id: 'org.nativescript.mydrawerng',
+  id: 'org.mxordn.loewemodulation',
   appPath: 'src',
   appResourcesPath: 'App_Resources',
   android: {

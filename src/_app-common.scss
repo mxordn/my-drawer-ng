@@ -41,3 +41,7 @@
 .nt-drawer__header-image {
   color: const(grey);
 }
+
+:disabled {
+  opacity: 0.5;
+}
