@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { ModalDialogParams, RouterExtensions } from "@nativescript/angular";
+import { ModalDialogParams } from "@nativescript/angular";
 import { ImageSource } from "@nativescript/core";
 
 @Component({

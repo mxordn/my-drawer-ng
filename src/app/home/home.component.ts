@@ -235,7 +235,7 @@ export class HomeComponent implements OnInit {
     else {
       let options = {
         title: "Neue Aufgabe",
-        message: "General Error! Something went wrong. Please try again and check your network connection. Most likely this happens because the server is not reachable.",
+        message: "General Error! Something went wrong. Please try again and check your network connection. Most likely this happens, because the server is not reachable.",
         okButtonText: "OK"
       };
       return options;

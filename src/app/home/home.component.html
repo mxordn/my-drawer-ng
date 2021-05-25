@@ -2,26 +2,9 @@
     <NavigationButton visibility="hidden"></NavigationButton>
     <GridLayout columns="50, *">
         <Label class="action-bar-title" text="Modulations" colSpan="2"></Label>
-
         <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
     </GridLayout>
 </ActionBar>
-
-<!--<ScrollView>
-  <StackLayout class="page__content">
-    <Label class="h2" text="Modulations Training (with examples by C. Loewe)" textWrap="true" marginTop=10 marginRight=10 marginLeft=10 marginBottom=20></Label>
-    <StackLayout borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=250 verticalAlignment="stretch">
-      <Image [src]="img" stretch="aspectFit" style="border: 50px solid transparent;" height=200></Image>
-      <Label [text]="hint" textWrap="true" (textChange)="onTextChange($event)" marginTop=10></Label>
-    </StackLayout>
-    <button verticalAlignment="bottom" class="-primary -rounded-sm -outline" text="New Exercise!" (tap)="onTapNewExercise($event)"></button>
-    <button [isEnabled]="done" verticalAlignment="bottom" class="-secondary -rounded-sm -outline" [text]="toggleText" (tap)="onTapShowSolution($event)"></button>
-    
-    <StackLayout [visibility]="solutionVisible" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=200 verticalAlignment="stretch">
-      <Image [src]="imgSolution" stretch="aspectFit" style="border: 50px solid transparent;" marginTop=20 marginBottom=10></Image>onTapS
-    </StackLayout>
-  </StackLayout>
-</ScrollView>-->
 
 <GridLayout cloumns="auto, auto" rows="*, auto">
   <GridLayout row="0" colSpan="2" rows="*, auto" columns="*, 120" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=250 verticalAlignment="stretch">
