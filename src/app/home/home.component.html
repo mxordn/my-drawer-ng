@@ -16,8 +16,10 @@
     </StackLayout>
   </GridLayout>
   <ActivityIndicator [busy]="processing"></ActivityIndicator>
-  <GridLayout row="1" rows="*, *" columns="*,10,*" orientation="horizontal" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent">
-    <button row="0" column="0" width="50%" class="-primary -rounded-sm -outline" text="New Exercise!" (tap)="onTapNewExercise($event)" [isEnabled]="!processing"></button>
-    <button row="0" column="2" width="50%" class="-secondary -rounded-sm -outline" [text]="toggleText" (tap)="openSolution()" [isEnabled]="done ? done : !processing"></button>
+  <GridLayout row="1" rows="*" columns="*,10,*" orientation="horizontal" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent">
+    <button row="0" column="0" width="50%" class="-primary -rounded-sm -outline" text="New Exercise!" (tap)="onTapNewExercise($event)" [isEnabled]="!processing"
+    android:padding="10"></button>
+    <button row="0" column="2" width="50%" class="-secondary -rounded-sm -outline" text="Show Solution" (tap)="openSolution()" [isEnabled]="done ? done : !processing"
+    android:padding="10"></button>
   </GridLayout>
 </GridLayout>
