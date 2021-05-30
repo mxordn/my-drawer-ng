@@ -1,3 +1,4 @@
+
 <ActionBar class="action-bar">
     <NavigationButton visibility="hidden"></NavigationButton>
     <GridLayout columns="50, *">
@@ -8,7 +9,7 @@
 
 <GridLayout cloumns="auto, auto" rows="*, auto">
   <GridLayout row="0" colSpan="2" rows="*, auto" columns="*, 120" borderLeftWidth=10 borderLeftColor="transparent" borderRightWidth=10 borderRightColor="transparent" height=250 verticalAlignment="stretch">
-    <Image row="0" column="0" colspan="2" [src]="img" stretch="aspectFit" style="border: 50px solid transparent;" height=200 [isEnabled]="!processing"></Image>
+    <Image loadMode="async" id="exerciseSnippet" row="0" column="0" colspan="2" [src]="img" stretch="aspectFit" style="border: 50px solid transparent;" height=200 [isEnabled]="!processing" [hidden]="imgHidden"></Image>
     <StackLayout row="1" colspan="2">
       <Label text="Hinweis:" (textChange)="onTextChange($event)" marginTop=10></Label>
       <label text="Tap ”New Exercise!“ to start the Training." textWrap="true" marginTop=5 [visibility]="startScreenText"></label>

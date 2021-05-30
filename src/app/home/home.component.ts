@@ -2,13 +2,16 @@
 import { Injectable, Component, OnInit, ViewContainerRef } from '@angular/core'
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser'
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer'
-import { Application, EventData, Button, TextView, LoadEventData, WebView, ImageSource, Dialogs } from '@nativescript/core'
+import { Application, EventData, Button, TextView, LoadEventData, WebView, ImageSource, Dialogs, Frame, Image } from '@nativescript/core'
 import { EngraverService, Svg } from './engraver.service'
 import { HttpResponse } from '@nativescript/core'
-import { Http, HTTPFormData, HTTPFormDataEntry } from '@klippa/nativescript-http'
+import { Http, HTTPFormData } from '@klippa/nativescript-http'
 import { Drawer } from '../app.component';
-import { ModalDialogService, ModalDialogOptions, ModalDialogParams } from '@nativescript/angular';
+import { ModalDialogService, ModalDialogOptions } from '@nativescript/angular';
 import { Solution } from '../solution-modal/solution.modal';
+//import { InverterService } from './invert.service';
+import { ImageFilters } from 'nativescript-image-filters'
+import { systemAppearance } from '@nativescript/core/application'
 
 //import { ImageSourceSVG } from '@sergeymell/nativescript-svg'
 //import { ImageSource } from 'tns-core-modules/image-source'
@@ -81,14 +84,17 @@ export class HomeComponent implements OnInit {
   imgSolution: ImageSource;
   solutionVisible: String = 'collapse';
   startScreenText: String = 'visible';
+  private _ImageFilters: ImageFilters;
+  imgHidden: boolean = true;
   //toggleText = "Show Solution";
 
   constructor(//private hC: HttpClient,
-    private sanitizer: DomSanitizer,
+    //private sanitizer: DomSanitizer,
     private modalService: ModalDialogService, private vcRef: ViewContainerRef,
     //private svgService: SvgService,
-    private engraver: EngraverService,
+    //private engraver: EngraverService,
     private drawer: Drawer,
+    //private filter: InverterService,
     //public img: ImageSource// = new ImageSourceSVG()
     //private hintSnack: MatSnackBar
     ) {
@@ -98,6 +104,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     //this.scores.hint = "Hier ist ein Hint!";
     // Init your component properties here.
+    this._ImageFilters = new ImageFilters();
   }
 
   onDrawerButtonTap(): void {
@@ -166,6 +173,7 @@ export class HomeComponent implements OnInit {
       this.solutionVisible = 'collapse';
       //this.toggleText = "Show Sample Solution";
       this.processing = true;
+      this.imgHidden = true;
 
       const formData = new HTTPFormData();
       this.userMods = this.drawer.getUsersMods();
@@ -176,8 +184,8 @@ export class HomeComponent implements OnInit {
 
       await Http.request({
           timeout: 10000,
-          url: 'https://4f2240440bf3.ngrok.io/api/neueAufgabeApp',
-          //54ae1935cfef9457761fd2e2f0668c855db0d5d9d436a87817856ccee43b e5624b203cdf 755bd6e26aee 8587c9f07fe6
+          url: 'https://421b64cf9a20.ngrok.io/api/neueAufgabeApp',
+          //54ae1935cfef9457761fd2e2f0668c855db0d5d9d436a87817856ccee43b e5624b203cdf 755bd6e26aee 8587c9f07fe6 4f2240440bf3 b63bffb654f9 794be53211c8 67fcde4db7a4
           method: 'POST',
           //headers: { "Content-Type": "application/json" },
           content: formData
@@ -197,36 +205,48 @@ export class HomeComponent implements OnInit {
           this.htmlString = this.scores.svg;
           //this.img.fromResource(this.scores.svg.toString());
           //this.img = ImageSource.fromBase64Sync("iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAABmJLR0QA/wD/AP+gvaeTAAAIZUlEQVR4nO3dW4xV1R3H8c9wnQEGodzUasWGeK2M+iBBUART9aWo9RILNjakfWlpiUlNWps0Nr2kfWlSg33oo4pprVVLm7RNuYmA2D6gaKslJEwrGMpFhAEcZsDpw9mX04Gzz95n7zOzB883k+y19qy19n//Zp2z91rrv/7T5gktUjJquA0YSbTEykBLrAy0xMpAS6wMtMTKQEusDIwZbgNADx9wnD766QPjGMs4JjGNScNso2ET6yjddHOAQ5xKUaWdacxkNpczubkGnpOhFWsvO9nNB9nr9rKPfewA05jDdVxSsI0JDIlYPexgJ4fO/fupXMmlTGIiE8EJTtDDe+ziyKA6hznM60xnLjfQ2dybQFtzx4ZH2MobnP6/0xNZyGLmczUzUrR0kHfYxka2cHLQr8dwPQuYWpjtZ9M0sY6ygbf4OD53AQ+wjAWMy9F2H1tYwwscq/7FKOaypFnfaE0Q6wyvsyl8qIGFrORu2gu91Ee8zGq2VZ8dz23MK/69qGix9rKWA/GJO3icRYVe5Gw28WPWVZ+axVI+XeRVihNrgNdYz5ngxFyeYmFBzadhMyt5K8qP5vPMo62Y9ke7rYhmenmJ7QzARB7nGS4vou30XMbXmMa2yqvbALvZzxzGFtB+ET3rCM9yOMjN59d8JnereejmIV6P8tN5mCl5m83dsw7wNB9CG9/iOT6V16q8TOErjOLVSl8/yT/4bN4xUz6x3uNpTkAHv+FRRueypzBGcRvX8ofKS14fb3MZF+Rqs1EO8By9MIW/cG/jbTWL+/lzpE8vz7K/8dYaFesIz/ARXMRmbmnchuayiFe4sJI5xZrgS6MBGhLrJM/SQ9inrmvw6kNEV3X/6on/zFnJLtYAa4NnXwdrS69UhS7+xIRK5jAvBW85mcgu1mu8C22sKfGn72zm83T0frqL7ZlbyCjWXtYHyW+X8hs9mft4NMqsY1+26lnE+pg/BqOZm/hRtguVhZ9ycyV1ht/Hg7M0ZBFre/Dc7eS3+eZYhpGxrIkmCg/wtwx1U4t1jE1B8gfDPZrJyWy+H2U2DZoSSyK1WOuD+am5fDODYSVlFZ+rpE6xMW2tdGIdiSc+nirL8lkuxrI6yuxM+5qaTqwtwezwHUM7P9VUFrGkkjrD1lRVUojVw5tB8vHG7Cor34tSO4IBSTIpxNoRrM3Mb/7s8BCzhAWV1GneqF8+hVg7g+Oqho0qMV+PUjsTSgXUE2tvsDI6maV5jCor90YD7IO8X6dwPbFCvR+gI6ddpaSjetBWr3PVE2t3cFyex6JysyxK7U4oRR2xjgYeHBOi8dT5yK3Rh+ZQnbf5RLH2BMdbGF+IXaVkfHVX6E4qmSjWv4Pj4twGlZzbo1R3UrFEscJV+PP4M1ghvsEDCaWSxQrdqa7Kb065uTJK1fAgq1BbrJ7Ae3FqOv+pEc2F0XJ1b7AMek5qixUux19Zs8R5xRVRqnbnqi1W6FtXqNNOeYlvc7BTYUxtsUJXtOa7apaC+Db7apapLVbobv2JE6u2n3mrZwXEXqiNiNXiLGqLFS51pZhBPB+IB4W1R3a1xQrrfELEim+zEbE+YT0rvs3aq8e1xQo8TrL6A4xU4tucULNMbbGmBcd/FWVOudkVpabXLFNbrM5gO8QRDhZoVCnZHy2ztof7rM5F4qtD2LneKcqosvJulKrdrdQRa2Zw3JZU6HwgvsGZCaWSxZodHFN7ToxU1kep2UnFEsUKd5NsSbcxd4TSy2tRZnZSyUSxJgdfWyfTek6MSF6NfJdn1NmoWG9sOCc4rslvVFmJb21OQinqixX6bb+QNCk2gjnJi1Fmbp3C9cS6JHiaHmNtTrtKycvRQGcGF9UpnGKKJtT7F3mMKiu/jFJd9QunEOuGwDFy+3n3DrE+enBVNu/XI4VYnXFDP2nYrlISu/LfmGorYrqZ0gVBwXVsbsyu8rEh8lUfHTkA1iGdWFPjb65v0J/dsrLRX+2g3pV2x2bqOfjbg0mIt3kyq2nl4+f8s5Ian8HvJbVYnbH77RN1nE3Kzh5+GGUWZ1i/yrK6My/YEHqcB5PWIktNP8sjf4ZZ3JShbhaxRvGFYMP43/luhpol4rFo2DyGu7MJkHH3/WTGB76X27mWa7LUHnae57EocydXZ6uefZF1XnCNAZYPCv9SbjbxSLTZ94psH8AK2cVqY2kwYOzj/nivSql5k3uCuArM4IuNBKhpaPm+g4eDh8hR7iq9Xm9yF0crmck83GBoqkZ9Habw5cAlej8L+WuDDTWdTSyKQl+0s6zxoCE5HENmsiz4Ex1nKb9rvK1m8Xx1n+pgeRQOoxHyedFcyopgKraXB1hVmvev03yHh6LVg04e4dJcbeZ2OZrJimCqfoAnuTX2nx829nAzP4uefdP5aq4+VaGIYGPtdMUr1/v4Ff3cPBwRj/pZzYPx7hCu4kvFBNAtKDLbGK6hnW4G9PMKL3NNnbWlgtnIUp6JvgrGcCd3FhOWTZGef23MZwWzghNvs5jb2VDYNWqynsUsieYScCErigz4pymhNz8OQ29WLczOZyX3JPnzNMJJXmL1oLgylVmXm8ofejPiWBjUtSp+SSf3sTz3NrNeNvMcLw7ytRtNV7ZZl0w0OVzwh2yNt6RHdLCAJWG44Fk1alezn3fZxga2RgOXiDHcyIJcUerq0mSxKvTwBjtrOnpdUBWIelL44Doe/vyHXdGL5dnMoIvrhyJg/JCIFfF+GOI8cfNVKmaEIc4vLsCulAxtqJSLw3vrYQ/d/JfDZ3+ozkU706uC5w/HXoZhiivTydwq34ITHOIEfeEPxoU/lX/LUNt7ccgoRxCeiaXQoi6t7SgZaImVgZZYGWiJlYGWWBloiZWBllgZ+B8bZJjdbbDc5QAAAABJRU5ErkJggg==");
-          this.img = ImageSource.fromBase64Sync(this.scores.pngInk.toString());
-          this.imgSolution = ImageSource.fromBase64Sync(this.scores.pngInkLsg.toString());
-          //this.lsg = this.scores.lsg;
+          //Uconsole.log(systemAppearance());
           this.hint = this.scores.hint;
           this.done = this.scores.done;
-          this.processing = false;
+          if (systemAppearance() === 'dark') {
+            this.img = ImageSource.fromBase64Sync(this.scores.pngInk.toString());
+            //let myImg: Image = new Image();
+            //const myImg: ImageSource = ImageSource.fromBase64Sync(this.scores.pngInk.toString());
+            setTimeout(this.invert.bind(this), 0);
+          }
+          else {
+            this.img = ImageSource.fromBase64Sync(this.scores.pngInk.toString());
+            this.imgHidden = false;
+            this.processing = false;
+          }
+
+          this.imgSolution = ImageSource.fromBase64Sync(this.scores.pngInkLsg.toString());
+          //this.lsg = this.scores.lsg;
+
+          //
           },
       e => {
           console.log(`Error in then: ${e}`)
           //this.scores.done = "Ups, da ging was schief.";
           this.processing = false;
-          Dialogs.alert(this.getErrorAlert(true));
-
+          Dialogs.alert(this.getErrorAlert(true, e));
       })
       .catch(
         (e) => {
           console.log(`Error to catch: ${e}`);
           this.processing = false;
-          Dialogs.alert(this.getErrorAlert(false));
+          Dialogs.alert(this.getErrorAlert(false, e));
         }
       );
 
 //    const result = await this.hC.post<Svg>("api/neueAufgabe", formData).toPromise().then()
   }
 
-  private getErrorAlert(timeout: Boolean) {
+  private getErrorAlert(timeout: Boolean, message: String) {
     if (timeout) {
       let options = {
         title: "Neue Aufgabe",
-        message: "Something went wrong. The server timeout. Please try again (maybe also later).",
+        message: `Something went wrong. ${message}`, //The server timeout. Please try again (maybe also later).",
         okButtonText: "OK"
       };
       return options;
@@ -234,7 +254,7 @@ export class HomeComponent implements OnInit {
     else {
       let options = {
         title: "Neue Aufgabe",
-        message: "General Error! Please try again and check your network connection. Most likely this happens, because the server is not reachable.",
+        message: `General Error! ${message}`,//Please try again and check your network connection. Most likely this happens, because the server is not reachable.",
         okButtonText: "OK"
       };
       return options;
@@ -273,4 +293,19 @@ export class HomeComponent implements OnInit {
           console.log(`Error: ${args.error}`);
       }
   }
+  private invert() {
+    const realImg = Frame.topmost().getViewById('exerciseSnippet') as Image;
+
+    this._ImageFilters.invert(realImg).then(
+      result => {
+        this.img = result;
+        //console.log(result.width);
+        this.processing = false;
+        this.imgHidden = false;
+      },
+      err => {
+        console.log('invert ERROR: ' + err);
+      }
+    );
+}
 }
