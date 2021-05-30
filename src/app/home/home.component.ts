@@ -9,13 +9,9 @@ import { Http, HTTPFormData } from '@klippa/nativescript-http'
 import { Drawer } from '../app.component';
 import { ModalDialogService, ModalDialogOptions } from '@nativescript/angular';
 import { Solution } from '../solution-modal/solution.modal';
-//import { InverterService } from './invert.service';
 import { ImageFilters } from 'nativescript-image-filters'
 import { systemAppearance } from '@nativescript/core/application'
 
-//import { ImageSourceSVG } from '@sergeymell/nativescript-svg'
-//import { ImageSource } from 'tns-core-modules/image-source'
-//import { MatSnackBar } from '@angular/material/snack-bar'
 
 
 export interface Modulation {
@@ -89,14 +85,9 @@ export class HomeComponent implements OnInit {
   //toggleText = "Show Solution";
 
   constructor(//private hC: HttpClient,
-    //private sanitizer: DomSanitizer,
     private modalService: ModalDialogService, private vcRef: ViewContainerRef,
-    //private svgService: SvgService,
-    //private engraver: EngraverService,
     private drawer: Drawer,
-    //private filter: InverterService,
-    //public img: ImageSource// = new ImageSourceSVG()
-    //private hintSnack: MatSnackBar
+
     ) {
     // Use the component constructor to inject providers.
   }
@@ -245,16 +236,16 @@ export class HomeComponent implements OnInit {
   private getErrorAlert(timeout: Boolean, message: String) {
     if (timeout) {
       let options = {
-        title: "Neue Aufgabe",
-        message: `Something went wrong. ${message}`, //The server timeout. Please try again (maybe also later).",
+        title: `${message}`,//Neue Aufgabe"
+        message: "Something went wrong. The server timeout. Please try again (maybe also later).", //, 
         okButtonText: "OK"
       };
       return options;
     }
     else {
       let options = {
-        title: "Neue Aufgabe",
-        message: `General Error! ${message}`,//Please try again and check your network connection. Most likely this happens, because the server is not reachable.",
+        title: `${message}.`, //Neue Aufgabe"
+        message: "Please try again and check your network connection. Most likely this happens, because the server is not reachable.", //`,General Error! Please try again and check your network connection. Most likely this happens, because the server is not reachable.
         okButtonText: "OK"
       };
       return options;
